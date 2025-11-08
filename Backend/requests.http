@@ -1,0 +1,103 @@
+### Variables
+@baseUrl = http://localhost:5001/api
+@token = your_jwt_token_here
+
+### Register User
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "Test123!"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Test123!"
+}
+
+### Get Current User
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Create Event
+POST {{baseUrl}}/events
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Team Meeting",
+  "description": "Weekly sync",
+  "startTime": "2025-12-15T10:00:00.000Z",
+  "endTime": "2025-12-15T11:00:00.000Z",
+  "status": "SWAPPABLE"
+}
+
+### Get All Events
+GET {{baseUrl}}/events
+Authorization: Bearer {{token}}
+
+### Get Single Event
+GET {{baseUrl}}/events/event_id_here
+Authorization: Bearer {{token}}
+
+### Update Event
+PUT {{baseUrl}}/events/event_id_here
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Team Meeting",
+  "description": "Weekly sync and planning"
+}
+
+### Delete Event
+DELETE {{baseUrl}}/events/event_id_here
+Authorization: Bearer {{token}}
+
+### Mark Event as Swappable
+PATCH {{baseUrl}}/events/event_id_here/mark-swappable
+Authorization: Bearer {{token}}
+
+### Get Marketplace
+GET {{baseUrl}}/marketplace?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### Get Marketplace Slot Details
+GET {{baseUrl}}/marketplace/event_id_here
+Authorization: Bearer {{token}}
+
+### Create Swap Request
+POST {{baseUrl}}/swap-requests
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetEventId": "target_event_id_here",
+  "requesterEventId": "your_event_id_here"
+}
+
+### Get Incoming Requests
+GET {{baseUrl}}/swap-requests/incoming
+Authorization: Bearer {{token}}
+
+### Get Outgoing Requests
+GET {{baseUrl}}/swap-requests/outgoing
+Authorization: Bearer {{token}}
+
+### Accept Swap Request
+PATCH {{baseUrl}}/swap-requests/request_id_here/accept
+Authorization: Bearer {{token}}
+
+### Reject Swap Request
+PATCH {{baseUrl}}/swap-requests/request_id_here/reject
+Authorization: Bearer {{token}}
+
+### Cancel Swap Request
+DELETE {{baseUrl}}/swap-requests/request_id_here
+Authorization: Bearer {{token}}
