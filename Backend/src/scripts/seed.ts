@@ -6,21 +6,7 @@ import SwapRequest from '../models/SwapRequest';
 import { env } from '../config/env';
 
 const testUsers = [
-  {
-    name: 'John Doe',
-    email: 'john@test.com',
-    password: 'Test123!'
-  },
-  {
-    name: 'Jane Smith',
-    email: 'jane@test.com',
-    password: 'Test123!'
-  },
-  {
-    name: 'Mike Johnson',
-    email: 'mike@test.com',
-    password: 'Test123!'
-  },
+  
   {
     name: 'Sarah Williams',
     email: 'sarah@test.com',
@@ -35,17 +21,8 @@ const testUsers = [
 
 const eventTemplates = [
   { title: 'Team Meeting', description: 'Weekly sync with team' },
-  { title: 'Client Call', description: 'Discuss project requirements' },
-  { title: 'Code Review', description: 'Review PR #123' },
-  { title: 'Focus Block', description: 'Deep work session' },
-  { title: '1-on-1', description: 'Manager check-in' },
-  { title: 'Design Review', description: 'Review mockups' },
-  { title: 'Standup', description: 'Daily standup meeting' },
-  { title: 'Planning Session', description: 'Sprint planning' },
-  { title: 'Lunch Break', description: 'Team lunch' },
-  { title: 'Workshop', description: 'Training session' },
-  { title: 'All Hands', description: 'Company-wide meeting' },
-  { title: 'Interview', description: 'Candidate interview' }
+  { title: 'Client Call', description: 'Discuss project requirements' }
+ 
 ];
 
 const connectDB = async (): Promise<void> => {
@@ -156,13 +133,18 @@ const seedDatabase = async (): Promise<void> => {
     const users: IUser[] = [];
     
     for (const userData of testUsers) {
-      // Don't hash the password here - let the User model's pre-save hook handle it
-      const user = await User.create({
-        name: userData.name,
-        email: userData.email,
-        password: userData.password // Store the plain text password
-      });
-      users.push(user);
+      try {
+        // Try to create user with explicit userName field to avoid index issues
+        const user = await User.create({
+          name: userData.name,
+          email: userData.email,
+          password: userData.password
+        });
+        users.push(user);
+      } catch (error) {
+        console.error(`Error creating user ${userData.email}:`, error);
+        // Continue with other users
+      }
     }
     
     console.log(`Created ${users.length} users`);
